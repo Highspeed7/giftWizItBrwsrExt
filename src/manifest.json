@@ -1,0 +1,29 @@
+{
+    "name": "Test Angular Extension",
+    "version": "1.0",
+    "description": "We built a Chrome Extension!",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "page_action": {
+      "default_popup": "index.html",
+      "default_icon": "/assets/icons/giftwizit-icon.png"
+    },
+    "background": {
+      "scripts" : ["background.js"],
+      "persistent": false
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "https://*.amazon.com/*",
+          "https://*.walmart.com/*"
+        ],
+        "js": ["content.js"]
+      }
+    ],
+    "manifest_version": 2,
+    "permissions": [
+      "tabs",
+      "declarativeContent",
+      "identity"
+    ]
+  }
