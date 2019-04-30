@@ -12,6 +12,13 @@ var showPageActionRule = {
     ]
 }
 
+var apiToken = null;
+var isAuth = false;
+
+var getApiToken = function(){
+    return apiToken;
+}
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.declarativeContent.onPageChanged.removeRules([], () => {
         chrome.declarativeContent.onPageChanged.addRules([
@@ -19,3 +26,10 @@ chrome.runtime.onInstalled.addListener(() => {
         ]);
     });
 });
+
+var checkAuth = function() {
+    chrome.storage.sync.get('access_token', (res) => {
+        apiToken = res.access_token;
+        isAuth = true;
+    });
+}

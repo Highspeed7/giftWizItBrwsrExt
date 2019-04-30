@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+div.app-container {
+    width: 300px;
+}
+
+div.app-container div.nav-icon {
+    text-align: center;
+}
+
+.logo {
+    width: 150px;
+}
+
+.nav-icon.active {
+    background-color: #eeeeee;
+}
