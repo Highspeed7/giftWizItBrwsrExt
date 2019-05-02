@@ -9,12 +9,14 @@ import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { GiftListModule } from './gift-list/gift-list.module';
 import { NotifModule } from './notif/notif.module';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NavBarComponent
+    NavBarComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -24,10 +26,16 @@ import { NotifModule } from './notif/notif.module';
     MsalModule.forRoot({
       clientID: "80796ab3-282c-49cd-8d61-eb66f744e64b"
     }),
-    RouterModule.forRoot([{
+    RouterModule.forRoot([
+      {
+        "path": "login",
+        "component": LoginComponent
+      },
+      {
       "path": "",
       "component": HomeComponent
-    }])
+      }
+    ])
   ],
   providers: [MsalService, AuthenticationService],
   bootstrap: [AppComponent]

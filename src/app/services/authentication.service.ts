@@ -5,28 +5,33 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { JwtHelper } from '../helpers/jwt-helpers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
+  public isAuthSource = new BehaviorSubject<boolean>(false);
+  public isAuthSource$ = this.isAuthSource.asObservable();
+
   private accountInfoSource = new Subject<any>();
   private accountInfo$ = this.accountInfoSource.asObservable();
 
-  private tokenExistsSource = new Subject<boolean>();
-  private tokenExists$ = this.tokenExistsSource.asObservable();
-
   private token = null;
-  private auth = false;
+
+  private redirectUrl = null;
 
   private authEndpoint: string;
+
+  private jwtHelper: JwtHelper;
 
   constructor(
     private msal: MsalService,
     private route: ActivatedRoute,
     private http: HttpClient
   ) {
+    this.jwtHelper = new JwtHelper();
     this.authEndpoint = "https://login.microsoftonline.com/giftwizit.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_SigninSignup1&client_id=80796ab3-282c-49cd-8d61-eb66f744e64b&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fadofnoobbeoahcnapncpcndebfcfdcbi.chromiumapp.org%2F&scope=https%3A%2F%2Fgiftwizit.onmicrosoft.com%2Fapi%2Fwrite%20https%3A%2F%2Fgiftwizit.onmicrosoft.com%2Fapi%2Fread&response_type=token&prompt=login"; 
   }
 
@@ -36,22 +41,32 @@ export class AuthenticationService {
         'interactive': true
       }, (r: any) => {
         var access_token = r.split("access_token=")[1].split("&")[0];
-        console.log(access_token + " from " + r);
-        chrome.storage.sync.set({"access_token": access_token}, () => {
-          this.token = access_token;
-          this.tokenExistsSource.next(true);
-          this.auth = true;
-        });
+        // var token_expiry = r.split("expires_in=")[1].split("&")[0];
+        // Set token expiration
+        // chrome.storage.sync.set({"token_expiry": token_expiry}, () => {});
+        // chrome.storage.sync.set({"access_token": access_token}, () => {
+        //   this.token = access_token;
+        //   this.isAuthSource.next(true);
+        // });
+        this.jwtHelper.storeToken(access_token, this.setAuthAndToken.bind(this))
       });
   }
 
+  public setAuthAndToken(token: any): any {
+    this.token = token;
+    this.isAuthSource.next(true);
+  }
+
   public getToken() {
+    // Try to get the token from storage.
+    chrome.storage.sync.get("access_token", (ac_token) => {
+      this.token = ac_token.access_token;
+    });
     return this.token;
   }
 
   public getUserId() {
     var user = null;
-    console.log("Token to use in call: " + this.token);
     this.http.get(`${environment.apiUrl}/Users/GetUserId`, {headers: {"Authorization": `bearer ${this.token}`}})
     .subscribe(
       res => this.accountInfoSource.next(res),
@@ -66,20 +81,7 @@ export class AuthenticationService {
       }
     );
   }
-
-  public tokenExists(): Observable<boolean> {
-    chrome.storage.sync.get("access_token", (t) => {
-      if(t.access_token != null) {
-        // Set the access token on check.
-        this.token = t.access_token;
-        this.tokenExistsSource.next(true)
-      }else {
-        this.tokenExistsSource.next(false);
-      }
-    })
-    return this.tokenExists$;
-  }
-
+  
   public getAccountInfoFeed() {
     return this.accountInfo$;
   }

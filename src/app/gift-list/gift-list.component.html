@@ -1,3 +1,10 @@
-<p>
-  gift-list works!
-</p>
+<div class="row">
+  <div class="col-12">
+    <h4>Gift Lists</h4>
+  </div>
+  <div class="col-12">
+    <ul>
+      <li *ngFor="let list of giftLists">{{list.name}}</li>
+    </ul>
+  </div>
+</div>
