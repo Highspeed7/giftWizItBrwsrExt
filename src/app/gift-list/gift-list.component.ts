@@ -22,9 +22,6 @@ export class GiftListComponent implements OnInit {
     private authSvc: AuthenticationService,
     private router: Router
   ) {
-    this.authSvc.isAuthSource$.subscribe((isLoggedIn) => {
-      this.getLists();
-    });
    }
 
   ngOnInit() {

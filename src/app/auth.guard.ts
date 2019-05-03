@@ -8,6 +8,8 @@ import { map, take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  private token = null;
+
   constructor(
     private authSvc: AuthenticationService,
     private router: Router
@@ -16,13 +18,15 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree 
     {
-      var token = this.authSvc.getToken();
-      if(token != null) {
-        return true;
-      }else {
-        console.log(state.url);
-        this.router.navigate(["/login"], {"queryParams": {"redirectTo": state.url}});
-        return false;
-      }
+      this.authSvc.getTokenFromStorage();
+      return this.authSvc.isAuthSource$.pipe(
+        map(isAuth => {
+          if(isAuth) {
+            return true;
+          }else {
+            return false;
+          }
+        })
+      );
     }
 }

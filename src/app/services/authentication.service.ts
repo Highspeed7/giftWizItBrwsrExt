@@ -12,7 +12,7 @@ import { JwtHelper } from '../helpers/jwt-helpers';
 })
 export class AuthenticationService {
 
-  public isAuthSource = new BehaviorSubject<boolean>(false);
+  public isAuthSource = new Subject<boolean>();
   public isAuthSource$ = this.isAuthSource.asObservable();
 
   private accountInfoSource = new Subject<any>();
@@ -57,11 +57,19 @@ export class AuthenticationService {
     this.isAuthSource.next(true);
   }
 
-  public getToken() {
+  public getTokenFromStorage() {
     // Try to get the token from storage.
     chrome.storage.sync.get("access_token", (ac_token) => {
       this.token = ac_token.access_token;
+      if(this.token !== null) {
+        this.isAuthSource.next(true);
+      }else {
+        this.login();
+      }
     });
+  }
+
+  public getToken() {
     return this.token;
   }
 
