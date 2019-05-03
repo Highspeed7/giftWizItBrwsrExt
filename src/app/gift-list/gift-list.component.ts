@@ -40,6 +40,7 @@ export class GiftListComponent implements OnInit {
     }, (error: any) => {
       switch(error.status) {
         case 401:
+          console.log("Got a 401");
           this.authSvc.login();
       }
     })

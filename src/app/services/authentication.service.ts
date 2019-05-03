@@ -41,32 +41,28 @@ export class AuthenticationService {
         'interactive': true
       }, (r: any) => {
         var access_token = r.split("access_token=")[1].split("&")[0];
-        // var token_expiry = r.split("expires_in=")[1].split("&")[0];
-        // Set token expiration
-        // chrome.storage.sync.set({"token_expiry": token_expiry}, () => {});
-        // chrome.storage.sync.set({"access_token": access_token}, () => {
-        //   this.token = access_token;
-        //   this.isAuthSource.next(true);
-        // });
-        this.jwtHelper.storeToken(access_token, this.setAuthAndToken.bind(this))
+        var token_expiry = r.split("expires_in=")[1].split("&")[0];
+        this.jwtHelper.storeToken(access_token, token_expiry, this.setAuthAndToken.bind(this))
       });
   }
 
-  public setAuthAndToken(token: any): any {
+  public setAuthAndToken(token: any) {
     this.token = token;
+    console.log("Setting auth");
     this.isAuthSource.next(true);
   }
 
   public getTokenFromStorage() {
-    // Try to get the token from storage.
-    chrome.storage.sync.get("access_token", (ac_token) => {
-      this.token = ac_token.access_token;
-      if(this.token !== null) {
-        this.isAuthSource.next(true);
-      }else {
-        this.login();
-      }
-    });
+    this.jwtHelper.getStorageToken(this.getTokenCallback.bind(this));
+  }
+
+  public getTokenCallback(doLogin: boolean, token?: any) {
+    if(doLogin) {
+      this.login()
+    }else {
+      this.token = token;
+      this.isAuthSource.next(true);
+    }
   }
 
   public getToken() {
