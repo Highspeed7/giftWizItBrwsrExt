@@ -17,8 +17,11 @@
           "https://*.amazon.com/*",
           "https://*.walmart.com/*"
         ],
-        "js": ["content.js"]
+        "js": ["jquery-3.4.1.min.js", "content.js"]
       }
+    ],
+    "web_accessible_resources": [
+      "content-gl-button.html"
     ],
     "manifest_version": 2,
     "permissions": [
