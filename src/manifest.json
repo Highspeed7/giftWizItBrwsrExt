@@ -17,7 +17,12 @@
           "https://*.amazon.com/*",
           "https://*.walmart.com/*"
         ],
-        "js": ["jquery-3.4.1.min.js", "content.js"]
+        "js": [
+          "jquery-3.4.1.min.js",
+          "partnerUrls.js", 
+          "content.amazon.js",
+          "content.walmart.js", 
+          "content.js"]
       }
     ],
     "web_accessible_resources": [

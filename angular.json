@@ -25,7 +25,10 @@
               "src/background.js",
               "src/content.js",
               "src/jquery-3.4.1.min.js",
-              "src/content-gl-button.html"
+              "src/content-gl-button.html",
+              "src/content.amazon.js",
+              "src/content.walmart.js",
+              "src/partnerUrls.js"
             ],
             "styles": [
               "src/assets/css/styles.css"
