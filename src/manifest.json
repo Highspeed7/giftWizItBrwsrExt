@@ -3,12 +3,14 @@
     "version": "1.0",
     "description": "We built a Chrome Extension!",
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js https://code.jquery.com/jquery-3.3.1.slim.min.js; object-src 'self'",
-    "page_action": {
+    "browser_action": {
       "default_popup": "index.html",
       "default_icon": "/assets/icons/giftwizit-icon.png"
     },
     "background": {
-      "scripts" : ["background.js"],
+      "scripts" : [
+        "background-service.js",
+        "background.js"],
       "persistent": false
     },
     "content_scripts": [
