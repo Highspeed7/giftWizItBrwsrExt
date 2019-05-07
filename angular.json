@@ -22,6 +22,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.json",
+              "src/jwt.helper.js",
               "src/background-service.js",
               "src/background.js",
               "src/content.js",
