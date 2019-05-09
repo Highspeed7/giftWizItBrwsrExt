@@ -1,10 +1,26 @@
 Utility = {
     wishList: {
         addItem: async function(itemToAdd) {
-            var access_token = null;
+            var apiEndpoint = "https://localhost:44327/api/Items";
             console.log("In addItem function");
             await GiftWizIt.getAuthToken().then((token) => {
-                access_token = token;
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": apiEndpoint,
+                    "method": "POST",
+                    "headers": {
+                      "authorization": `bearer ${token}`,
+                      "content-type": "application/json",
+                      "cache-control": "no-cache"
+                    },
+                    "processData": false,
+                    "data": JSON.stringify(itemToAdd)
+                  }
+                  
+                  $.ajax(settings).done(function (response) {
+                    console.log(response);
+                  });
             });
         }
     },

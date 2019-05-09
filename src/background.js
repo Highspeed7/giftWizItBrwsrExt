@@ -7,7 +7,12 @@ chrome.runtime.onInstalled.addListener(() => {
         if(request.action != null) {
             switch(request.action) {
                 case "ItemAdded": {
-                    GiftWizIt.wishList.addItem({"test": "testing"});
+                    if(request.data != null) {
+                        GiftWizIt.wishList.addItem(request.data);
+                    }else {
+                        throw new Error("No data sent");
+                        // TODO: Add logging
+                    }
                     break;
                 }
             }
