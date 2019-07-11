@@ -20,8 +20,6 @@ export class AuthenticationService {
 
   private token = null;
 
-  private redirectUrl = null;
-
   private authEndpoint: string;
 
   private jwtHelper: JwtHelper;

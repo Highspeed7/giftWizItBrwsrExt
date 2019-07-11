@@ -22,6 +22,34 @@ Amazon = {
                         }
                     }, 100);
                 });
+
+                $("div.gw-container > button").on("click", () => {
+                    // Begin collectiong page information
+                    // Collect item name
+                    var itemName = $("span#productTitle")[0].textContent.trim();
+
+                    // Collect url
+                    var url = window.location.href;
+
+                    // Collect the domain (base_url)
+                    var domain = window.location.origin;
+
+                    // Collect image source
+                    var img = $("img#landingImage")[0].src;
+
+                    // Send the collected data to the background for api call.
+                    chrome.runtime.sendMessage({
+                        action: "ItemAdded",
+                        data: {
+                            "name": itemName,
+                            "url": url,
+                            "domain": domain,
+                            "image": img
+                        }
+                    }, (res) => {
+                        alert("Background responded with: " + res.message);
+                    });
+                });
             });
         }
     }

@@ -1,7 +1,7 @@
 {
-    "name": "Test Angular Extension",
-    "version": "1.0",
-    "description": "We built a Chrome Extension!",
+    "name": "GiftWizIt",
+    "version": "1.0.11",
+    "description": "Get with your gifts! A gift registry application to solve some of your gift giving woes.",
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js https://code.jquery.com/jquery-3.3.1.slim.min.js; object-src 'self'",
     "browser_action": {
       "default_popup": "index.html",
@@ -30,10 +30,12 @@
       }
     ],
     "web_accessible_resources": [
-      "content-gl-button.html"
+      "content-gl-button.html",
+      "./assets/icons/giftwizit-icon.png"
     ],
     "manifest_version": 2,
     "permissions": [
+      "https://giftwizitapi.azurewebsites.net/*",
       "tabs",
       "declarativeContent",
       "identity",

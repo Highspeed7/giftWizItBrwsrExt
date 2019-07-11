@@ -1,0 +1,8 @@
+div.app-container {
+    background-color: aliceblue;
+}
+div.bottom-footer{
+    position:fixed;
+    bottom: 0px;
+    width: calc(100vw - 30px);
+}
